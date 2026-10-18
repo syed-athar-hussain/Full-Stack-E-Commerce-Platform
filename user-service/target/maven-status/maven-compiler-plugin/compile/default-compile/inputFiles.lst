@@ -1,0 +1,14 @@
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\config\SecurityConfig.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\controller\AuthController.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\dto\AuthResponse.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\dto\LoginRequest.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\dto\RegisterRequest.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\entity\Role.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\entity\User.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\exception\DuplicateUserException.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\exception\GlobalExceptionHandler.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\repository\UserRepository.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\security\JwtAuthFilter.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\security\JwtService.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\service\AuthService.java
+E:\Athar\Java\Spring-Projects\Aatzhmair-Ecommerce\user-service\src\main\java\com\aatzhmair\userservice\UserServiceApplication.java

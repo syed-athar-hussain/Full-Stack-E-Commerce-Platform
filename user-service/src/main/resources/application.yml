@@ -1,0 +1,29 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/aatzhmair
+    username: aatzhmair
+    password: aatzhmair
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: user_schema
+    show-sql: false
+  flyway:
+    schemas: user_schema
+    default-schema: user_schema
+    locations: classpath:db/migration
+  threads:
+    virtual:
+      enabled: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:change-this-to-a-long-random-string-in-prod-min-32-bytes}
+    expiration-ms: 3600000

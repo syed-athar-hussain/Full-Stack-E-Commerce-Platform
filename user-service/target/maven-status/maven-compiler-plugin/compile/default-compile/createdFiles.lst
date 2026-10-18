@@ -1,0 +1,14 @@
+com\aatzhmair\userservice\config\SecurityConfig.class
+com\aatzhmair\userservice\dto\RegisterRequest.class
+com\aatzhmair\userservice\dto\LoginRequest.class
+com\aatzhmair\userservice\entity\Role.class
+com\aatzhmair\userservice\exception\GlobalExceptionHandler.class
+com\aatzhmair\userservice\dto\AuthResponse.class
+com\aatzhmair\userservice\security\JwtAuthFilter.class
+com\aatzhmair\userservice\repository\UserRepository.class
+com\aatzhmair\userservice\UserServiceApplication.class
+com\aatzhmair\userservice\exception\DuplicateUserException.class
+com\aatzhmair\userservice\controller\AuthController.class
+com\aatzhmair\userservice\security\JwtService.class
+com\aatzhmair\userservice\entity\User.class
+com\aatzhmair\userservice\service\AuthService.class
