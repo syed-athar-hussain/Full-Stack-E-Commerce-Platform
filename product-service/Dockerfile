@@ -2,7 +2,9 @@ FROM maven:3.9-eclipse-temurin-25 AS build
 WORKDIR /app
 COPY pom.xml ./
 COPY product-service/pom.xml product-service/pom.xml
+COPY common/pom.xml common/pom.xml
 RUN mvn -pl product-service -am dependency:go-offline
+COPY common/src common/src
 COPY product-service/src product-service/src
 RUN mvn -pl product-service -am package -DskipTests
 

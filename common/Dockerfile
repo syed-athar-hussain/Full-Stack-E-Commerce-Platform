@@ -1,3 +1,0 @@
-COPY common/pom.xml common/pom.xml
-# ...after dependency:go-offline...
-COPY common/src common/src
