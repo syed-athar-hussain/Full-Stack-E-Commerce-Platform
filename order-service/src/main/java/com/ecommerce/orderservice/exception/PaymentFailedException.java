@@ -1,0 +1,5 @@
+package com.aatzhmair.orderservice.exception;
+
+public class PaymentFailedException extends RuntimeException {
+    public PaymentFailedException(String message, Throwable cause) { super(message, cause); }
+}
