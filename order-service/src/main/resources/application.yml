@@ -1,0 +1,37 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/aatzhmair
+    username: aatzhmair
+    password: aatzhmair
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: order_schema
+  flyway:
+    schemas: order_schema
+    default-schema: order_schema
+    locations: classpath:db/migration
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  threads:
+    virtual:
+      enabled: true
+
+product-service:
+  url: http://localhost:8082
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:change-this-to-a-long-random-string-in-prod-min-32-bytes}
+  stripe:
+    secret-key: ${STRIPE_SECRET_KEY:sk_test_your_key_here}
