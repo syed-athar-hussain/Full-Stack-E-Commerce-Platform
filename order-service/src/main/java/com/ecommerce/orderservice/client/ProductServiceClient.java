@@ -1,7 +1,7 @@
-package com.ecommerce.orderservice.client;
+package com.aatzhmair.orderservice.client;
 
-import com.ecommerce.orderservice.dto.ProductResponse;
-import com.ecommerce.orderservice.dto.StockAdjustmentRequest;
+import com.aatzhmair.orderservice.dto.ProductResponse;
+import com.aatzhmair.orderservice.dto.StockAdjustmentRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

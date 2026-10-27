@@ -26,6 +26,21 @@ spring:
   threads:
     virtual:
       enabled: true
+  
+  resilience4j:
+    circuitbreaker:
+      instances:
+        productService:
+          failureRateThreshold: 50
+          slidingWindowSize: 10
+          minimumNumberOfCalls: 5
+          waitDurationInOpenState: 10s
+          permittedNumberOfCallsInHalfOpenState: 3
+    retry:
+      instances:
+        productService:
+          maxAttempts: 3
+          waitDuration: 200ms
 
 product-service:
   url: http://localhost:8082
