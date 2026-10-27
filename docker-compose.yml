@@ -83,6 +83,19 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
       kafka: { condition: service_started }
+  
+  api-gateway:
+    build: { context: ., dockerfile: api-gateway/Dockerfile }
+    ports: ["8080:8080"]
+    environment:
+      USER_SERVICE_URL: http://user-service:8081
+      PRODUCT_SERVICE_URL: http://product-service:8082
+      ORDER_SERVICE_URL: http://order-service:8083
+      JWT_SECRET: ${JWT_SECRET:-local-dev-secret-change-me-please-32-bytes-min}
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
 
 volumes:
   pg_data:

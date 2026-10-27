@@ -1,7 +1,7 @@
 package com.aatzhmair.orderservice.saga;
 
 import com.aatzhmair.common.events.OrderPlacedEvent;
-import com.aatzhmair.orderservice.client.ProductServiceClient;
+import com.aatzhmair.orderservice.client.ProductServiceGateway;
 import com.aatzhmair.orderservice.dto.PlaceOrderRequest;
 import com.aatzhmair.orderservice.dto.ProductResponse;
 import com.aatzhmair.orderservice.dto.StockAdjustmentRequest;
@@ -22,16 +22,16 @@ import java.util.UUID;
 @Component
 public class OrderSagaOrchestrator {
 
-    private final ProductServiceClient productServiceClient;
+    private final ProductServiceGateway productServiceGateway;
     private final StripePaymentService stripePaymentService;
     private final OrderRepository orderRepository;
     private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
-    public OrderSagaOrchestrator(ProductServiceClient productServiceClient,
+    public OrderSagaOrchestrator(ProductServiceGateway productServiceGateway,
                                   StripePaymentService stripePaymentService,
                                   OrderRepository orderRepository,
                                   KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate) {
-        this.productServiceClient = productServiceClient;
+        this.productServiceGateway = productServiceGateway;
         this.stripePaymentService = stripePaymentService;
         this.orderRepository = orderRepository;
         this.kafkaTemplate = kafkaTemplate;
@@ -44,8 +44,8 @@ public class OrderSagaOrchestrator {
 
         try {
             for (var item : request.lineItems()) {
-                ProductResponse product = productServiceClient.getById(item.productId()); // price comes from here, never from the client
-                productServiceClient.decreaseStock(item.productId(), new StockAdjustmentRequest(item.quantity()));
+                ProductResponse product = productServiceGateway.getById(item.productId()); // price comes from here, never from the client
+                productServiceGateway.decreaseStock(item.productId(), new StockAdjustmentRequest(item.quantity()));
                 reserved.add(new Reserved(item.productId(), item.quantity(), product.price()));
             }
 
@@ -63,7 +63,14 @@ public class OrderSagaOrchestrator {
             return order;
 
         } catch (Exception e) {
-            reserved.forEach(r -> productServiceClient.restoreStock(r.productId(), new StockAdjustmentRequest(r.quantity())));
+            for (Reserved r : reserved) {
+                try {
+                    productServiceGateway.restoreStock(r.productId(), new StockAdjustmentRequest(r.quantity()));
+                } catch (Exception compensationFailure) {
+                    log.error("Failed to restore stock for product {} while compensating order {}",
+                            r.productId(), order.getId(), compensationFailure);
+                }
+            }
             order.fail(e.getMessage());
             orderRepository.save(order);
             throw new OrderFailedException(order.getId(), e.getMessage(), e);
