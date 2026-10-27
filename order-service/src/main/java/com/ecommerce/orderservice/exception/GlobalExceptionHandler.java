@@ -28,4 +28,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleOrderFailed(OrderFailedException ex) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(Map.of("error", ex.getMessage()));
     }
+    @ExceptionHandler(ProductServiceUnavailableException.class)
+    public ResponseEntity<Map<String, String>> handleProductServiceDown(ProductServiceUnavailableException ex) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(Map.of("error", "Checkout is temporarily unavailable — please try again shortly"));
+    }
 }
