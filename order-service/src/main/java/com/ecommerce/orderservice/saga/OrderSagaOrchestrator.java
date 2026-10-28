@@ -26,6 +26,7 @@ public class OrderSagaOrchestrator {
     private final StripePaymentService stripePaymentService;
     private final OrderRepository orderRepository;
     private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
+    private final MeterRegistry meterRegistry;
 
     public OrderSagaOrchestrator(ProductServiceGateway productServiceGateway,
                                   StripePaymentService stripePaymentService,
@@ -40,6 +41,7 @@ public class OrderSagaOrchestrator {
     private record Reserved(UUID productId, int quantity, BigDecimal unitPrice) {}
 
     public Order execute(Order order, PlaceOrderRequest request) {
+        Timer.Sample sample = Timer.start(meterRegistry);
         List<Reserved> reserved = new ArrayList<>();
 
         try {
@@ -60,6 +62,8 @@ public class OrderSagaOrchestrator {
             orderRepository.save(order);
 
             kafkaTemplate.send("order-events", order.getId().toString(), toEvent(order));
+            meterRegistry.counter("orders.placed", "status", "confirmed").increment();
+            sample.stop(meterRegistry.timer("orders.saga.duration", "status", "confirmed"));
             return order;
 
         } catch (Exception e) {
@@ -73,6 +77,8 @@ public class OrderSagaOrchestrator {
             }
             order.fail(e.getMessage());
             orderRepository.save(order);
+            meterRegistry.counter("orders.placed", "status", "failed").increment();
+            sample.stop(meterRegistry.timer("orders.saga.duration", "status", "failed"));
             throw new OrderFailedException(order.getId(), e.getMessage(), e);
         }
     }
