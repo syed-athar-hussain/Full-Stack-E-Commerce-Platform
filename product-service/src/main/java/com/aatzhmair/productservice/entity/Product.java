@@ -15,6 +15,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "external_id", unique = true)
+    private String externalId;
+
     @Column(nullable = false)
     private String name;
 
@@ -26,6 +29,18 @@ public class Product {
 
     @Column(nullable = false)
     private String category;
+
+    private String gender;
+
+    @Column(name = "sub_category")
+    private String subCategory;
+
+    @Column(name = "product_type")
+    private String productType;
+
+    private String colour;
+
+    private String usage;
 
     @Column(name = "stock_quantity", nullable = false)
     private int stockQuantity;
@@ -62,6 +77,15 @@ public class Product {
         this.updatedAt = Instant.now();
     }
 
+    public void applyTaxonomy(String externalId, String gender, String subCategory, String productType, String colour, String usage) {
+        this.externalId = externalId;
+        this.gender = gender;
+        this.subCategory = subCategory;
+        this.productType = productType;
+        this.colour = colour;
+        this.usage = usage;
+    }
+
     public void decreaseStock(int quantity) {
         if (quantity > this.stockQuantity) {
             throw new InsufficientStockException(id, quantity, stockQuantity);
@@ -69,17 +93,23 @@ public class Product {
         this.stockQuantity -= quantity;
         this.updatedAt = Instant.now();
     }
+
     public void restoreStock(int quantity) {
         this.stockQuantity += quantity;
         this.updatedAt = Instant.now();
     }
 
     public UUID getId() { return id; }
+    public String getExternalId() { return externalId; }
     public String getName() { return name; }
     public String getDescription() { return description; }
     public BigDecimal getPrice() { return price; }
     public String getCategory() { return category; }
+    public String getGender() { return gender; }
+    public String getSubCategory() { return subCategory; }
+    public String getProductType() { return productType; }
+    public String getColour() { return colour; }
+    public String getUsage() { return usage; }
     public int getStockQuantity() { return stockQuantity; }
     public String getImageUrl() { return imageUrl; }
-    public long getVersion() { return version; }
 }
