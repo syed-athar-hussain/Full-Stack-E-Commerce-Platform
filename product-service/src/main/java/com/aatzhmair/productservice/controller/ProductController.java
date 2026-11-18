@@ -52,4 +52,8 @@ public class ProductController {
         productService.restoreStock(id, request.quantity());
         return ResponseEntity.noContent().build();
     }
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ProductImportService.ImportResult importCsv(@RequestParam("file") MultipartFile file) throws IOException {
+        return productImportService.importFrom(file.getInputStream());
+    }
 }
